@@ -86,6 +86,9 @@ namespace CardCatalog.Objects
       conn.Open();
       SqlCommand cmd = new SqlCommand("DELETE FROM authors;", conn);
       cmd.ExecuteNonQuery();
+
+      // cmd = new SqlCommand("DELETE FROM authors_books;", conn);
+      // cmd.ExecuteNonQuery();
       conn.Close();
     }
   }

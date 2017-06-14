@@ -107,20 +107,65 @@ namespace CardCatalog.Objects
     }
     public void AddAuthor(Author author)
     {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
 
+      SqlCommand cmd = new SqlCommand("INSERT INTO authors_books (author_id, book_id) VALUES (@AuthorId, @BookId);", conn);
+
+      SqlParameter authorIdParameter = new SqlParameter("@AuthorId", author.Id);
+      cmd.Parameters.Add(authorIdParameter);
+
+      SqlParameter bookIdParameter = new SqlParameter("@BookId", this.Id);
+      cmd.Parameters.Add(bookIdParameter);
+
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
     }
     public List<Author> GetAuthors()
     {
-      List<Author> authors = new List<Author> {};
+      List<Author> allAuthors = new List<Author> {};
+      SqlConnection conn = DB.Connection();
+      conn.Open();
 
-      return authors;
+      SqlCommand cmd = new SqlCommand("SELECT authors.* FROM authors JOIN authors_books ON (authors.id = authors_books.author_id) JOIN books ON (authors_books.book_id = books.id) WHERE books.id = @BookId;", conn);
+      SqlParameter bookIdParameter = new SqlParameter("@BookId", this.Id);
+      cmd.Parameters.Add(bookIdParameter);
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+      while(rdr.Read())
+      {
+        int authorId = rdr.GetInt32(0);
+        string authorName = rdr.GetString(1);
+        Author newAuthor = new Author(authorName, authorId);
+        allAuthors.Add(newAuthor);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return allAuthors;
     }
+    // public static List<Book> funcName()
+    // {
+    //
+    // }
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
       SqlCommand cmd = new SqlCommand("DELETE FROM books;", conn);
       cmd.ExecuteNonQuery();
+
+      // cmd = new SqlCommand("DELETE FROM authors_books;", conn);
+      // cmd.ExecuteNonQuery();
       conn.Close();
     }
   }
