@@ -56,7 +56,7 @@ namespace CardCatalog.Objects
     }
     public static List<Author> GetAll()
     {
-      List<Author> allCities = new List<Author>{};
+      List<Author> allAuthors = new List<Author>{};
       SqlConnection conn = DB.Connection();
       conn.Open();
 
@@ -67,7 +67,7 @@ namespace CardCatalog.Objects
         int authorId = rdr.GetInt32(0);
         string authorName = rdr.GetString(1);
         Author newAuthor = new Author(authorName, authorId);
-        allCities.Add(newAuthor);
+        allAuthors.Add(newAuthor);
       }
       if (rdr != null)
       {
@@ -77,7 +77,7 @@ namespace CardCatalog.Objects
       {
         conn.Close();
       }
-      return allCities;
+      return allAuthors;
     }
 
     public static void DeleteAll()
@@ -87,8 +87,8 @@ namespace CardCatalog.Objects
       SqlCommand cmd = new SqlCommand("DELETE FROM authors;", conn);
       cmd.ExecuteNonQuery();
 
-      // cmd = new SqlCommand("DELETE FROM authors_books;", conn);
-      // cmd.ExecuteNonQuery();
+      cmd = new SqlCommand("DELETE FROM authors_books;", conn);
+      cmd.ExecuteNonQuery();
       conn.Close();
     }
   }

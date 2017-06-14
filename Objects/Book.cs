@@ -56,7 +56,7 @@ namespace CardCatalog.Objects
     }
     public static List<Book> GetAll()
     {
-      List<Book> allCities = new List<Book>{};
+      List<Book> allBooks = new List<Book>{};
       SqlConnection conn = DB.Connection();
       conn.Open();
 
@@ -67,7 +67,7 @@ namespace CardCatalog.Objects
         int bookId = rdr.GetInt32(0);
         string bookTitle = rdr.GetString(1);
         Book newBook = new Book(bookTitle, bookId);
-        allCities.Add(newBook);
+        allBooks.Add(newBook);
       }
       if (rdr != null)
       {
@@ -77,7 +77,7 @@ namespace CardCatalog.Objects
       {
         conn.Close();
       }
-      return allCities;
+      return allBooks;
     }
     public void Update(string newTitle)
     {
@@ -153,10 +153,35 @@ namespace CardCatalog.Objects
       }
       return allAuthors;
     }
-    // public static List<Book> funcName()
-    // {
-    //
-    // }
+    public static List<Book> Search(string searchString)
+    {
+      List<Book> foundBooks = new List<Book>{};
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      //Find books containing searchString in their title.
+      SqlCommand cmd = new SqlCommand("SELECT * FROM books WHERE title LIKE @SearchString;", conn);
+      SqlParameter searchParameter = new SqlParameter("@SearchString", "%" + searchString + "%");
+      cmd.Parameters.Add(searchParameter);
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+      while(rdr.Read())
+      {
+        int bookId = rdr.GetInt32(0);
+        string bookTitle = rdr.GetString(1);
+        Book newBook = new Book(bookTitle, bookId);
+        foundBooks.Add(newBook);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return foundBooks;
+    }
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();
@@ -164,8 +189,8 @@ namespace CardCatalog.Objects
       SqlCommand cmd = new SqlCommand("DELETE FROM books;", conn);
       cmd.ExecuteNonQuery();
 
-      // cmd = new SqlCommand("DELETE FROM authors_books;", conn);
-      // cmd.ExecuteNonQuery();
+      cmd = new SqlCommand("DELETE FROM authors_books;", conn);
+      cmd.ExecuteNonQuery();
       conn.Close();
     }
   }

@@ -56,7 +56,7 @@ namespace CardCatalog.Objects
     }
     public static List<Patron> GetAll()
     {
-      List<Patron> allCities = new List<Patron>{};
+      List<Patron> allPatrons = new List<Patron>{};
       SqlConnection conn = DB.Connection();
       conn.Open();
 
@@ -67,7 +67,7 @@ namespace CardCatalog.Objects
         int patronId = rdr.GetInt32(0);
         string patronName = rdr.GetString(1);
         Patron newPatron = new Patron(patronName, patronId);
-        allCities.Add(newPatron);
+        allPatrons.Add(newPatron);
       }
       if (rdr != null)
       {
@@ -77,7 +77,7 @@ namespace CardCatalog.Objects
       {
         conn.Close();
       }
-      return allCities;
+      return allPatrons;
     }
 
     public static void DeleteAll()

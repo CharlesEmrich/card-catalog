@@ -88,5 +88,25 @@ namespace CardCatalog
       //Assert
       Assert.Equal(expected, actual);
     }
+    [Fact]
+    public void Book_Search_ReturnsBooksWithStringInTitle()
+    {
+      //Arrange
+      Author testAuthor1 = new Author("Edogawa Ranpo");
+      testAuthor1.Save();
+      Author testAuthor2 = new Author("Suehiro Maruo");
+      testAuthor2.Save();
+      Book testBook = new Book("The Strange Tale of Panorama Island");
+      testBook.Save();
+      testBook.AddAuthor(testAuthor1);
+      testBook.AddAuthor(testAuthor2);
+
+      //Act
+      List<Book> actual = Book.Search("Strange");
+      List<Book> expected = new List<Book> {testBook};
+
+      //Assert
+      Assert.Equal(expected, actual);
+    }
   }
 }
