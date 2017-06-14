@@ -17,6 +17,8 @@ namespace CardCatalog
     public void Dispose()
     {
       Book.DeleteAll();
+      Author.DeleteAll();
+      Patron.DeleteAll();
     }
 
     [Fact]
@@ -103,6 +105,26 @@ namespace CardCatalog
 
       //Act
       List<Book> actual = Book.Search("Strange");
+      List<Book> expected = new List<Book> {testBook};
+
+      //Assert
+      Assert.Equal(expected, actual);
+    }
+    [Fact]
+    public void Book_Search_ReturnsBooksWithStringInAuthors()
+    {
+      //Arrange
+      Author testAuthor1 = new Author("Edogawa Ranpo");
+      testAuthor1.Save();
+      Author testAuthor2 = new Author("Suehiro Maruo");
+      testAuthor2.Save();
+      Book testBook = new Book("The Strange Tale of Panorama Island");
+      testBook.Save();
+      testBook.AddAuthor(testAuthor1);
+      testBook.AddAuthor(testAuthor2);
+
+      //Act
+      List<Book> actual = Book.Search("Maruo");
       List<Book> expected = new List<Book> {testBook};
 
       //Assert

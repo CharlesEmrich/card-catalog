@@ -159,10 +159,10 @@ namespace CardCatalog.Objects
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      //Find books containing searchString in their title.
+      //Find books containing searchString in their title:
       SqlCommand cmd = new SqlCommand("SELECT * FROM books WHERE title LIKE @SearchString;", conn);
-      SqlParameter searchParameter = new SqlParameter("@SearchString", "%" + searchString + "%");
-      cmd.Parameters.Add(searchParameter);
+      SqlParameter searchTitleParameter = new SqlParameter("@SearchString", "%" + searchString + "%");
+      cmd.Parameters.Add(searchTitleParameter);
 
       SqlDataReader rdr = cmd.ExecuteReader();
       while(rdr.Read())
@@ -172,6 +172,25 @@ namespace CardCatalog.Objects
         Book newBook = new Book(bookTitle, bookId);
         foundBooks.Add(newBook);
       }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+
+      //Find books by author:
+      cmd = new SqlCommand("SELECT books.* FROM authors JOIN authors_books ON (authors.id = authors_books.author_id) JOIN books ON (authors_books.book_id = books.id) WHERE authors.name LIKE @SearchString;", conn);
+      SqlParameter searchAuthorParameter = new SqlParameter("@SearchString", "%" + searchString + "%");
+      cmd.Parameters.Add(searchAuthorParameter);
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        int bookId = rdr.GetInt32(0);
+        string bookTitle = rdr.GetString(1);
+        Book newBook = new Book(bookTitle, bookId);
+        foundBooks.Add(newBook);
+      }
+
       if (rdr != null)
       {
         rdr.Close();

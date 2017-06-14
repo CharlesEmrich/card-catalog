@@ -16,6 +16,8 @@ namespace CardCatalog
     }
     public void Dispose()
     {
+      Book.DeleteAll();
+      Author.DeleteAll();
       Patron.DeleteAll();
     }
 
