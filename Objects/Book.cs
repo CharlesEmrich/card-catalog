@@ -79,7 +79,32 @@ namespace CardCatalog.Objects
       }
       return allCities;
     }
+    public void Update(string newTitle)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
 
+      SqlCommand cmd = new SqlCommand("UPDATE books SET title = @NewTitle OUTPUT INSERTED.title WHERE id = @BookId;", conn);
+      SqlParameter newTitleParameter = new SqlParameter("@NewTitle", newTitle);
+      cmd.Parameters.Add(newTitleParameter);
+      SqlParameter flightIdParameter = new SqlParameter("@BookId", this.Id);
+      cmd.Parameters.Add(flightIdParameter);
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this.Title = rdr.GetString(0);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();

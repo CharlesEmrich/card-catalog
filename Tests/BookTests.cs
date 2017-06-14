@@ -52,5 +52,21 @@ namespace CardCatalog
       //Assert
       Assert.Equal(testList, result);
     }
+    [Fact]
+   public void Test_Update_UpdatesBookTitleInDatabase()
+   {
+     //Arrange
+     Book testBook = new Book("The Human Char");
+     testBook.Save();
+     string newTitle = "The Human Chair";
+
+     //Act
+     testBook.Update(newTitle);
+
+     string result = testBook.Title;
+
+     //Assert
+     Assert.Equal(newTitle, result);
+   }
   }
 }
