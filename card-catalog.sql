@@ -8,7 +8,7 @@ USE [card_catalog]
 GO
 
 CREATE TABLE "books" (
-    "id" int  NOT NULL ,
+    "id" int IDENTITY(1,1) NOT NULL ,
     "title" VARCHAR(255)  NOT NULL ,
     CONSTRAINT "pk_books" PRIMARY KEY (
         "id"
@@ -18,7 +18,7 @@ CREATE TABLE "books" (
 GO
 
 CREATE TABLE "authors" (
-    "id" int  NOT NULL ,
+    "id" int IDENTITY(1,1) NOT NULL ,
     "name" VARCHAR(255)  NOT NULL ,
     CONSTRAINT "pk_authors" PRIMARY KEY (
         "id"
@@ -28,7 +28,7 @@ CREATE TABLE "authors" (
 GO
 
 CREATE TABLE "patrons" (
-    "id" int  NOT NULL ,
+    "id" int IDENTITY(1,1) NOT NULL ,
     "name" VARCHAR(255)  NOT NULL ,
     CONSTRAINT "pk_patrons" PRIMARY KEY (
         "id"
@@ -38,7 +38,7 @@ CREATE TABLE "patrons" (
 GO
 
 CREATE TABLE "authors_books" (
-    "id" int  NOT NULL ,
+    "id" int IDENTITY(1,1) NOT NULL ,
     "author_id" int  NOT NULL ,
     "book_id" int  NOT NULL ,
     CONSTRAINT "pk_authors_books" PRIMARY KEY (
@@ -49,7 +49,7 @@ CREATE TABLE "authors_books" (
 GO
 
 CREATE TABLE "copies" (
-    "id" int  NOT NULL ,
+    "id" int IDENTITY(1,1) NOT NULL ,
     "book_id" int  NOT NULL ,
     CONSTRAINT "pk_copies" PRIMARY KEY (
         "id"
@@ -59,7 +59,7 @@ CREATE TABLE "copies" (
 GO
 
 CREATE TABLE "checkouts" (
-    "id" int  NOT NULL ,
+    "id" int IDENTITY(1,1) NOT NULL ,
     "patron_id" int  NOT NULL ,
     "copy_id" int  NOT NULL ,
     "due_date" datetime  NOT NULL ,

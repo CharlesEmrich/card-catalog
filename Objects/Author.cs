@@ -2,30 +2,29 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System;
 
-namespace AirlineProject.Objects
+namespace CardCatalog.Objects
 {
-  public class City
+  public class Author
   {
     public int Id  { get; set; }
     public string Name { get; set; }
 
-    //Id set to zero to avoid null exception being thrown
-    public City(string name, int id = 0)
+    public Author(string name, int id = 0)
     {
       Id = id;
       Name = name;
     }
-    public override bool Equals(System.Object otherCity)
+    public override bool Equals(System.Object otherAuthor)
     {
-        if (!(otherCity is City))
+        if (!(otherAuthor is Author))
         {
           return false;
         }
         else
         {
-          City newCity = (City) otherCity;
-          bool idEquality = (this.Id == newCity.Id);
-          bool nameEquality = (this.Name == newCity.Name);
+          Author newAuthor = (Author) otherAuthor;
+          bool idEquality = (this.Id == newAuthor.Id);
+          bool nameEquality = (this.Name == newAuthor.Name);
           return (idEquality && nameEquality);
         }
     }
@@ -35,9 +34,9 @@ namespace AirlineProject.Objects
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO cities (name) OUTPUT INSERTED.id VALUES (@CityName);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO authors (name) OUTPUT INSERTED.id VALUES (@AuthorName);", conn);
 
-      SqlParameter nameParameter = new SqlParameter("@CityName", this.Name);
+      SqlParameter nameParameter = new SqlParameter("@AuthorName", this.Name);
       cmd.Parameters.Add(nameParameter);
       SqlDataReader rdr = cmd.ExecuteReader();
 
@@ -55,20 +54,20 @@ namespace AirlineProject.Objects
         conn.Close();
       }
     }
-    public static List<City> GetAll()
+    public static List<Author> GetAll()
     {
-      List<City> allCities = new List<City>{};
+      List<Author> allCities = new List<Author>{};
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT * FROM cities;", conn);
+      SqlCommand cmd = new SqlCommand("SELECT * FROM authors;", conn);
       SqlDataReader rdr = cmd.ExecuteReader();
       while(rdr.Read())
       {
-        int cityId = rdr.GetInt32(0);
-        string cityName = rdr.GetString(1);
-        City newCity = new City(cityName, cityId);
-        allCities.Add(newCity);
+        int authorId = rdr.GetInt32(0);
+        string authorName = rdr.GetString(1);
+        Author newAuthor = new Author(authorName, authorId);
+        allCities.Add(newAuthor);
       }
       if (rdr != null)
       {
@@ -85,7 +84,7 @@ namespace AirlineProject.Objects
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-      SqlCommand cmd = new SqlCommand("DELETE FROM cities;", conn);
+      SqlCommand cmd = new SqlCommand("DELETE FROM authors;", conn);
       cmd.ExecuteNonQuery();
       conn.Close();
     }

@@ -5,7 +5,7 @@ using Nancy;
 using Nancy.Owin;
 using Nancy.ViewEngines.Razor;
 
-namespace AirlineProject
+namespace CardCatalog
 {
   public class Startup
   {
@@ -40,6 +40,6 @@ namespace AirlineProject
   }
   public static class DBConfiguration
   {
-    public static string ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=airline;Integrated Security=SSPI;";
+    public static string ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=card_catalog;Integrated Security=SSPI;";
   }
 }
