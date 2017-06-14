@@ -20,7 +20,7 @@ namespace CardCatalog
     }
 
     [Fact]
-    public void Test_Equal_ReturnsTrueForIdenticalObjects()
+    public void Author_Equal_ReturnsTrueForIdenticalObjects()
     {
       //Arrange, Act
       Author firstAuthor = new Author("Yukio Mishima");
@@ -30,7 +30,7 @@ namespace CardCatalog
       Assert.Equal(firstAuthor, secondAuthor);
     }
     [Fact]
-    public void Test_CitiesEmptyAtFirst()
+    public void Author_CitiesEmptyAtFirst()
     {
       //Arrange, Act
       int result = Author.GetAll().Count;
@@ -39,7 +39,7 @@ namespace CardCatalog
       Assert.Equal(0, result);
     }
     [Fact]
-    public void Test_Save_SavesAuthorToDatabase()
+    public void Author_Save_SavesAuthorToDatabase()
     {
       //Arrange
       Author testAuthor = new Author("Edogawa Ranpo");

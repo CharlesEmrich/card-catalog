@@ -20,7 +20,7 @@ namespace CardCatalog
     }
 
     [Fact]
-    public void Test_Equal_ReturnsTrueForIdenticalObjects()
+    public void Book_Equal_ReturnsTrueForIdenticalObjects()
     {
       //Arrange, Act
       Book firstBook = new Book("Confessions of a Mask");
@@ -30,7 +30,7 @@ namespace CardCatalog
       Assert.Equal(firstBook, secondBook);
     }
     [Fact]
-    public void Test_CitiesEmptyAtFirst()
+    public void Book_CitiesEmptyAtFirst()
     {
       //Arrange, Act
       int result = Book.GetAll().Count;
@@ -39,7 +39,7 @@ namespace CardCatalog
       Assert.Equal(0, result);
     }
     [Fact]
-    public void Test_Save_SavesBookToDatabase()
+    public void Book_Save_SavesBookToDatabase()
     {
       //Arrange
       Book testBook = new Book("The Strange Tale of Panorama Island");
@@ -53,20 +53,40 @@ namespace CardCatalog
       Assert.Equal(testList, result);
     }
     [Fact]
-   public void Test_Update_UpdatesBookTitleInDatabase()
-   {
-     //Arrange
-     Book testBook = new Book("The Human Char");
-     testBook.Save();
-     string newTitle = "The Human Chair";
+    public void Book_Update_UpdatesBookTitleInDatabase()
+    {
+      //Arrange
+      Book testBook = new Book("The Human Char");
+      testBook.Save();
+      string newTitle = "The Human Chair";
 
-     //Act
-     testBook.Update(newTitle);
+      //Act
+      testBook.Update(newTitle);
 
-     string result = testBook.Title;
+      string result = testBook.Title;
 
-     //Assert
-     Assert.Equal(newTitle, result);
-   }
+      //Assert
+      Assert.Equal(newTitle, result);
+    }
+    [Fact]
+    public void Book_AddAuthor_AddsAuthorAssociationToBooksAuthors()
+    {
+      //Arrange
+      Author testAuthor1 = new Author("Edogawa Ranpo");
+      testAuthor1.Save();
+      Author testAuthor2 = new Author("Suehiro Maruo");
+      testAuthor2.Save();
+      Book testBook = new Book("The Strange Tale of Panorama Island");
+      testBook.Save();
+
+      //Act
+      testBook.AddAuthor(testAuthor1);
+      testBook.AddAuthor(testAuthor2);
+      List<Author> actual = testBook.GetAuthors();
+      List<Author> expected = new List<Author> {testAuthor1, testAuthor2};
+
+      //Assert
+      Assert.Equal(expected, actual);
+    }
   }
 }

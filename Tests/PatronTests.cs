@@ -20,7 +20,7 @@ namespace CardCatalog
     }
 
     [Fact]
-    public void Test_Equal_ReturnsTrueForIdenticalObjects()
+    public void Patron_Equal_ReturnsTrueForIdenticalObjects()
     {
       //Arrange, Act
       Patron firstPatron = new Patron("Jimothy Twilliams");
@@ -30,7 +30,7 @@ namespace CardCatalog
       Assert.Equal(firstPatron, secondPatron);
     }
     [Fact]
-    public void Test_CitiesEmptyAtFirst()
+    public void Patron_CitiesEmptyAtFirst()
     {
       //Arrange, Act
       int result = Patron.GetAll().Count;
@@ -39,7 +39,7 @@ namespace CardCatalog
       Assert.Equal(0, result);
     }
     [Fact]
-    public void Test_Save_SavesPatronToDatabase()
+    public void Patron_Save_SavesPatronToDatabase()
     {
       //Arrange
       Patron testPatron = new Patron("Tedward Sklemp");

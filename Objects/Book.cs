@@ -105,6 +105,16 @@ namespace CardCatalog.Objects
         conn.Close();
       }
     }
+    public void AddAuthor(Author author)
+    {
+
+    }
+    public List<Author> GetAuthors()
+    {
+      List<Author> authors = new List<Author> {};
+
+      return authors;
+    }
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();
