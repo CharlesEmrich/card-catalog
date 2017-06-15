@@ -138,7 +138,6 @@ namespace CardCatalog.Objects
       {
         conn.Close();
       }
-      return allPatrons;
     }
 
     public void Delete()

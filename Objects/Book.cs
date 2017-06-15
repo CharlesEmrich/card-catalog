@@ -140,6 +140,24 @@ namespace CardCatalog.Objects
       }
     }
 
+    public void AddCopy()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO copies (book_id) VALUES (@BookId);", conn);
+
+      SqlParameter bookIdParameter = new SqlParameter("@BookId", this.Id);
+      cmd.Parameters.Add(bookIdParameter);
+
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
     public void AddAuthor(Author author)
     {
       SqlConnection conn = DB.Connection();

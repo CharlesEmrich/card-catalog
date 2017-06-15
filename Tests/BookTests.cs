@@ -31,7 +31,7 @@ namespace CardCatalog
       Assert.Equal(firstBook, secondBook);
     }
     [Fact]
-    public void Book_CitiesEmptyAtFirst()
+    public void Book_BooksEmptyAtFirst()
     {
       //Arrange, Act
       int result = Book.GetAll().Count;
