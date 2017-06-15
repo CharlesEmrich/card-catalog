@@ -81,37 +81,37 @@ namespace CardCatalog.Objects
       return allPatrons;
     }
 
-    // public static Author Find(int id)
-    // {
-    //   SqlConnection conn = DB.Connection();
-    //   conn.Open();
-    //
-    //   SqlCommand cmd = new SqlCommand("SELECT * FROM patrons WHERE id = @PatronId;", conn);
-    //   SqlParameter patronIdParameter = new SqlParameter();
-    //   patronIdParameter.ParameterName = "@PatronId";
-    //   patronIdParameter.Value = id.ToString();
-    //   cmd.Parameters.Add(patronIdParameter);
-    //   SqlDataReader rdr = cmd.ExecuteReader();
-    //
-    //   int foundPatronId = 0;
-    //   string foundPatronName = null;
-    //   while(rdr.Read())
-    //   {
-    //     foundPatronId = rdr.GetInt32(0);
-    //     foundPatronName = rdr.GetString(1);
-    //   }
-    //   Patron foundPatron = new Patron(foundPatronName, foundPatronId);
-    //
-    //   if (rdr != null)
-    //   {
-    //     rdr.Close();
-    //   }
-    //   if (conn != null)
-    //   {
-    //     conn.Close();
-    //   }
-    //   return foundPatron;
-    // }
+    public static Patron Find(int id)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM patrons WHERE id = @PatronId;", conn);
+      SqlParameter patronIdParameter = new SqlParameter();
+      patronIdParameter.ParameterName = "@PatronId";
+      patronIdParameter.Value = id.ToString();
+      cmd.Parameters.Add(patronIdParameter);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      int foundPatronId = 0;
+      string foundPatronName = null;
+      while(rdr.Read())
+      {
+        foundPatronId = rdr.GetInt32(0);
+        foundPatronName = rdr.GetString(1);
+      }
+      Patron foundPatron = new Patron(foundPatronName, foundPatronId);
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return foundPatron;
+    }
 
     public static void DeleteAll()
     {
