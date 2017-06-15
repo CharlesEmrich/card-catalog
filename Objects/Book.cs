@@ -147,57 +147,96 @@ namespace CardCatalog.Objects
 
       SqlCommand cmd = new SqlCommand("INSERT INTO authors_books (author_id, book_id) VALUES (@AuthorId, @BookId);", conn);
 
-      SqlParameter authorIdParameter = new SqlParameter();
-      authorIdParameter.ParameterName = "@AuthorId";
-      authorIdParameter.Value = author.Id;
+      SqlParameter authorIdParameter = new SqlParameter("@AuthorId", author.Id);
       cmd.Parameters.Add(authorIdParameter);
 
-      SqlParameter bookIdParameter = new SqlParameter();
-      bookIdParameter.ParameterName = "@BookId";
-      bookIdParameter.Value = this.Id;
+      SqlParameter bookIdParameter = new SqlParameter("@BookId", this.Id);
       cmd.Parameters.Add(bookIdParameter);
 
       cmd.ExecuteNonQuery();
+
       if (conn != null)
       {
-      conn.Close();
+        conn.Close();
       }
     }
 
     public List<Author> GetAuthors()
     {
+      List<Author> allAuthors = new List<Author> {};
       SqlConnection conn = DB.Connection();
-     conn.Open();
+      conn.Open();
 
-     SqlCommand cmd = new SqlCommand("SELECT authors.* FROM books JOIN authors_books ON (books.id = authors_books.book_id) JOIN authors ON (authors_books.author_id = authors.id)  WHERE books.id = @BookId;", conn);
+      SqlCommand cmd = new SqlCommand("SELECT authors.* FROM authors JOIN authors_books ON (authors.id = authors_books.author_id) JOIN books ON (authors_books.book_id = books.id) WHERE books.id = @BookId;", conn);
+      SqlParameter bookIdParameter = new SqlParameter("@BookId", this.Id);
+      cmd.Parameters.Add(bookIdParameter);
 
-     SqlParameter bookIdParameter = new SqlParameter();
-     bookIdParameter.ParameterName = "@BookId";
-     bookIdParameter.Value = this.Id;
+      SqlDataReader rdr = cmd.ExecuteReader();
+      while(rdr.Read())
+      {
+        int authorId = rdr.GetInt32(0);
+        string authorName = rdr.GetString(1);
+        Author newAuthor = new Author(authorName, authorId);
+        allAuthors.Add(newAuthor);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return allAuthors;
+    }
 
-     cmd.Parameters.Add(bookIdParameter);
-     SqlDataReader rdr = cmd.ExecuteReader();
+    public static List<Book> Search(string searchString)
+    {
+      List<Book> foundBooks = new List<Book>{};
+      SqlConnection conn = DB.Connection();
+      conn.Open();
 
-     List<Author> authors = new List<Author>{};
+      //Find books containing searchString in their title:
+      SqlCommand cmd = new SqlCommand("SELECT * FROM books WHERE title LIKE @SearchString;", conn);
+      SqlParameter searchTitleParameter = new SqlParameter("@SearchString", "%" + searchString + "%");
+      cmd.Parameters.Add(searchTitleParameter);
 
-     while(rdr.Read())
-     {
-       int authorId = rdr.GetInt32(0);
-       string authorName = rdr.GetString(1);
+      SqlDataReader rdr = cmd.ExecuteReader();
+      while(rdr.Read())
+      {
+        int bookId = rdr.GetInt32(0);
+        string bookTitle = rdr.GetString(1);
+        Book newBook = new Book(bookTitle, bookId);
+        foundBooks.Add(newBook);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
 
-       Author newAuthor = new Author(authorName, authorId);
-       authors.Add(newAuthor);
-     }
+      //Find books by author:
+      cmd = new SqlCommand("SELECT books.* FROM authors JOIN authors_books ON (authors.id = authors_books.author_id) JOIN books ON (authors_books.book_id = books.id) WHERE authors.name LIKE @SearchString;", conn);
+      SqlParameter searchAuthorParameter = new SqlParameter("@SearchString", "%" + searchString + "%");
+      cmd.Parameters.Add(searchAuthorParameter);
+      rdr = cmd.ExecuteReader();
 
-     if (rdr != null)
-     {
-       rdr.Close();
-     }
-     if (conn != null)
-     {
-       conn.Close();
-     }
-     return authors;
+      while(rdr.Read())
+      {
+        int bookId = rdr.GetInt32(0);
+        string bookTitle = rdr.GetString(1);
+        Book newBook = new Book(bookTitle, bookId);
+        foundBooks.Add(newBook);
+      }
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return foundBooks;
     }
 
     public static void DeleteAll()
@@ -205,6 +244,9 @@ namespace CardCatalog.Objects
       SqlConnection conn = DB.Connection();
       conn.Open();
       SqlCommand cmd = new SqlCommand("DELETE FROM books;", conn);
+      cmd.ExecuteNonQuery();
+
+      cmd = new SqlCommand("DELETE FROM authors_books;", conn);
       cmd.ExecuteNonQuery();
       conn.Close();
     }
