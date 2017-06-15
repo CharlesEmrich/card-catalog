@@ -140,6 +140,26 @@ namespace CardCatalog.Objects
       }
     }
 
+    public void Delete()
+   {
+     SqlConnection conn = DB.Connection();
+     conn.Open();
+
+     SqlCommand cmd = new SqlCommand("DELETE FROM patrons WHERE id = @PatronId;", conn);
+
+     SqlParameter patronIdParameter = new SqlParameter();
+     patronIdParameter.ParameterName = "@PatronId";
+     patronIdParameter.Value = this.Id;
+
+     cmd.Parameters.Add(patronIdParameter);
+     cmd.ExecuteNonQuery();
+
+     if (conn != null)
+     {
+       conn.Close();
+     }
+   }
+
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();
