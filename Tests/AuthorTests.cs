@@ -18,14 +18,12 @@ namespace CardCatalog
     {
       Author.DeleteAll();
     }
-
     [Fact]
     public void Author_Equal_ReturnsTrueForIdenticalObjects()
     {
       //Arrange, Act
       Author firstAuthor = new Author("Yukio Mishima");
       Author secondAuthor = new Author("Yukio Mishima");
-
       //Assert
       Assert.Equal(firstAuthor, secondAuthor);
     }
@@ -34,7 +32,6 @@ namespace CardCatalog
     {
       //Arrange, Act
       int result = Author.GetAll().Count;
-
       //Assert
       Assert.Equal(0, result);
     }
@@ -44,15 +41,12 @@ namespace CardCatalog
       //Arrange
       Author testAuthor = new Author("Edogawa Ranpo");
       testAuthor.Save();
-
       //Act
       List<Author> result = Author.GetAll();
       List<Author> testList = new List<Author>{testAuthor};
-
       //Assert
       Assert.Equal(testList, result);
     }
-
     [Fact]
     public void Test_Find_FindsAuthorInDatabase()
     {

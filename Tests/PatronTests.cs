@@ -18,23 +18,20 @@ namespace CardCatalog
     {
       Patron.DeleteAll();
     }
-
     [Fact]
     public void Patron_Equal_ReturnsTrueForIdenticalObjects()
     {
       //Arrange, Act
       Patron firstPatron = new Patron("Jimothy Twilliams");
       Patron secondPatron = new Patron("Jimothy Twilliams");
-
       //Assert
       Assert.Equal(firstPatron, secondPatron);
     }
     [Fact]
-    public void Patron_CitiesEmptyAtFirst()
+    public void Patron_PatronsEmptyAtFirst()
     {
       //Arrange, Act
       int result = Patron.GetAll().Count;
-
       //Assert
       Assert.Equal(0, result);
     }
@@ -44,13 +41,22 @@ namespace CardCatalog
       //Arrange
       Patron testPatron = new Patron("Tedward Sklemp");
       testPatron.Save();
-
       //Act
       List<Patron> result = Patron.GetAll();
       List<Patron> testList = new List<Patron>{testPatron};
-
       //Assert
       Assert.Equal(testList, result);
+    }
+    [Fact]
+    public void Test_Find_FindsPatronInDatabase()
+    {
+      //Arrange
+      Patron testPatron = new Patron("Harry Potter");
+      testPatron.Save();
+      //Act
+      Patron foundPatron = Patron.Find(testPatron.Id);
+      //Assert
+      Assert.Equal(testPatron, foundPatron);
     }
   }
 }

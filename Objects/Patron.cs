@@ -54,9 +54,10 @@ namespace CardCatalog.Objects
         conn.Close();
       }
     }
+
     public static List<Patron> GetAll()
     {
-      List<Patron> allCities = new List<Patron>{};
+      List<Patron> allPatrons = new List<Patron>{};
       SqlConnection conn = DB.Connection();
       conn.Open();
 
@@ -67,7 +68,7 @@ namespace CardCatalog.Objects
         int patronId = rdr.GetInt32(0);
         string patronName = rdr.GetString(1);
         Patron newPatron = new Patron(patronName, patronId);
-        allCities.Add(newPatron);
+        allPatrons.Add(newPatron);
       }
       if (rdr != null)
       {
@@ -77,8 +78,40 @@ namespace CardCatalog.Objects
       {
         conn.Close();
       }
-      return allCities;
+      return allPatrons;
     }
+
+    // public static Author Find(int id)
+    // {
+    //   SqlConnection conn = DB.Connection();
+    //   conn.Open();
+    //
+    //   SqlCommand cmd = new SqlCommand("SELECT * FROM patrons WHERE id = @PatronId;", conn);
+    //   SqlParameter patronIdParameter = new SqlParameter();
+    //   patronIdParameter.ParameterName = "@PatronId";
+    //   patronIdParameter.Value = id.ToString();
+    //   cmd.Parameters.Add(patronIdParameter);
+    //   SqlDataReader rdr = cmd.ExecuteReader();
+    //
+    //   int foundPatronId = 0;
+    //   string foundPatronName = null;
+    //   while(rdr.Read())
+    //   {
+    //     foundPatronId = rdr.GetInt32(0);
+    //     foundPatronName = rdr.GetString(1);
+    //   }
+    //   Patron foundPatron = new Patron(foundPatronName, foundPatronId);
+    //
+    //   if (rdr != null)
+    //   {
+    //     rdr.Close();
+    //   }
+    //   if (conn != null)
+    //   {
+    //     conn.Close();
+    //   }
+    //   return foundPatron;
+    // }
 
     public static void DeleteAll()
     {
