@@ -58,5 +58,18 @@ namespace CardCatalog
       //Assert
       Assert.Equal(testPatron, foundPatron);
     }
+    [Fact]
+    public void Patron_Update_UpdatesPatronNameInDatabase()
+    {
+      //Arrange
+      Patron testPatron = new Patron("Hermione Granger");
+      testPatron.Save();
+      string newName = "Ron Weasley";
+      //Act
+      testPatron.Update(newName);
+      string result = testPatron.Name;
+      //Assert
+      Assert.Equal(newName, result);
+    }
   }
 }

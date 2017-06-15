@@ -121,8 +121,8 @@ namespace CardCatalog.Objects
       SqlCommand cmd = new SqlCommand("UPDATE books SET title = @NewTitle OUTPUT INSERTED.title WHERE id = @BookId;", conn);
       SqlParameter newTitleParameter = new SqlParameter("@NewTitle", newTitle);
       cmd.Parameters.Add(newTitleParameter);
-      SqlParameter flightIdParameter = new SqlParameter("@BookId", this.Id);
-      cmd.Parameters.Add(flightIdParameter);
+      SqlParameter bookIdParameter = new SqlParameter("@BookId", this.Id);
+      cmd.Parameters.Add(bookIdParameter);
 
       SqlDataReader rdr = cmd.ExecuteReader();
 

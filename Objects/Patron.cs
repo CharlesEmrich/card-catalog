@@ -113,6 +113,33 @@ namespace CardCatalog.Objects
       return foundPatron;
     }
 
+    public void Update(string newName)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("UPDATE patrons SET name = @NewName OUTPUT INSERTED.name WHERE id = @PatronId;", conn);
+      SqlParameter newNameParameter = new SqlParameter("@NewName", newName);
+      cmd.Parameters.Add(newNameParameter);
+      SqlParameter patronIdParameter = new SqlParameter("@PatronId", this.Id);
+      cmd.Parameters.Add(patronIdParameter);
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this.Name = rdr.GetString(0);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();
