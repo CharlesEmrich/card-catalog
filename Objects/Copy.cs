@@ -163,7 +163,7 @@ namespace CardCatalog.Objects
       if (result != null)
       {
         return true;
-      } 
+      }
       else
       {
         return false;

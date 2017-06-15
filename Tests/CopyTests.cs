@@ -67,6 +67,37 @@ namespace CardCatalog
       Assert.Equal(expected, firstCopy.DueDate);
     }
     [Fact]
+    public void Copy_Checkin_UpdatesDueDateInFront()
+    {
+      //Arrange
+      Book newBook = new Book("Confessions of a Mask");
+      newBook.Save();
+      Copy firstCopy = new Copy(newBook.Id, Copy.DefaultDate());
+      firstCopy.Checkout(1);
+      //Act
+      firstCopy.Checkin();
+
+      DateTime expected = Copy.DefaultDate();
+      //Assert
+      Assert.Equal(expected, firstCopy.DueDate);
+    }
+    [Fact]
+    public void Copy_CheckIn_UpdatesDueDateInBack()
+    {
+      //Arrange
+      Book newBook = new Book("Confessions of a Mask");
+      newBook.Save();
+      Copy firstCopy = new Copy(newBook.Id, Copy.DefaultDate());
+      firstCopy.Checkout(1);
+      //Act
+      firstCopy.Checkin();
+
+      bool actual = firstCopy.IsCheckedOut();
+      bool expected = false;
+      //Assert
+      Assert.Equal(expected, actual);
+    }
+    [Fact]
     public void Copy_Checkout_UpdatesDueDateInBack()
     {
       //Arrange
