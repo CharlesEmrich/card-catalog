@@ -27,8 +27,8 @@ namespace CardCatalog
       //Arrange, Act
       Book newBook = new Book("Confessions of a Mask");
       newBook.Save();
-      Copy firstCopy = new Copy(newBook.Id);
-      Copy secondCopy = new Copy(newBook.Id);
+      Copy firstCopy = new Copy(newBook.Id, Copy.DefaultDate());
+      Copy secondCopy = new Copy(newBook.Id, Copy.DefaultDate());
       //Assert
       Assert.Equal(firstCopy, secondCopy);
     }
@@ -44,7 +44,7 @@ namespace CardCatalog
     public void Copy_Save_SavesCopyToDatabase()
     {
       //Arrange
-      Copy newCopy = new Copy(1);
+      Copy newCopy = new Copy(1, Copy.DefaultDate());
       newCopy.Save();
       //Act
       List<Copy> result = Copy.GetAll();

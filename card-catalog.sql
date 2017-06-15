@@ -51,6 +51,7 @@ GO
 CREATE TABLE "copies" (
     "id" int IDENTITY(1,1) NOT NULL ,
     "book_id" int  NOT NULL ,
+    "due_date" VARCHAR(50) ,
     CONSTRAINT "pk_copies" PRIMARY KEY (
         "id"
     )
@@ -62,31 +63,10 @@ CREATE TABLE "checkouts" (
     "id" int IDENTITY(1,1) NOT NULL ,
     "patron_id" int  NOT NULL ,
     "copy_id" int  NOT NULL ,
-    "due_date" datetime  NOT NULL ,
     CONSTRAINT "pk_checkouts" PRIMARY KEY (
         "id"
     )
 )
 
-GO
-
-ALTER TABLE "authors_books" ADD CONSTRAINT "fk_authors_books_author_id" FOREIGN KEY("author_id")
-REFERENCES "authors" ("id")
-GO
-
-ALTER TABLE "authors_books" ADD CONSTRAINT "fk_authors_books_book_id" FOREIGN KEY("book_id")
-REFERENCES "books" ("id")
-GO
-
-ALTER TABLE "copies" ADD CONSTRAINT "fk_copies_book_id" FOREIGN KEY("book_id")
-REFERENCES "books" ("id")
-GO
-
-ALTER TABLE "checkouts" ADD CONSTRAINT "fk_checkouts_patron_id" FOREIGN KEY("patron_id")
-REFERENCES "patrons" ("id")
-GO
-
-ALTER TABLE "checkouts" ADD CONSTRAINT "fk_checkouts_copy_id" FOREIGN KEY("copy_id")
-REFERENCES "copies" ("id")
 GO
 
