@@ -63,6 +63,7 @@ CREATE TABLE "checkouts" (
     "id" int IDENTITY(1,1) NOT NULL ,
     "patron_id" int  NOT NULL ,
     "copy_id" int  NOT NULL ,
+	"returned" bit DEFAULT 0 ,
     CONSTRAINT "pk_checkouts" PRIMARY KEY (
         "id"
     )

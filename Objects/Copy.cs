@@ -132,7 +132,7 @@ namespace CardCatalog.Objects
 
       this.DueDate = Copy.DefaultDate();
 
-      SqlCommand cmd = new SqlCommand("DELETE FROM checkouts WHERE copy_id = @CopyId;", conn);
+      SqlCommand cmd = new SqlCommand("UPDATE checkouts SET returned = 1 WHERE copy_id = @CopyId;", conn);
 
       SqlParameter copyIdParameter = new SqlParameter("@CopyId", this.Id);
       cmd.Parameters.Add(copyIdParameter);
@@ -149,7 +149,7 @@ namespace CardCatalog.Objects
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT copy_id FROM checkouts WHERE copy_id = @CopyId;", conn); //use try/catch and checked/unchecked? ExecuteScalar?
+      SqlCommand cmd = new SqlCommand("SELECT copy_id FROM checkouts WHERE copy_id = @CopyId AND returned = 0;", conn); //use try/catch and checked/unchecked? ExecuteScalar?
 
       SqlParameter copyIdParameter = new SqlParameter("@CopyId", this.Id);
       cmd.Parameters.Add(copyIdParameter);
