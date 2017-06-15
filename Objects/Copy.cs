@@ -127,7 +127,47 @@ namespace CardCatalog.Objects
 
     public void Checkin()
     {
-      //NOTE: Don't forget to write this!
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      this.DueDate = Copy.DefaultDate();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM checkouts WHERE copy_id = @CopyId;", conn);
+
+      SqlParameter copyIdParameter = new SqlParameter("@CopyId", this.Id);
+      cmd.Parameters.Add(copyIdParameter);
+
+      cmd.ExecuteNonQuery();
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+    public bool IsCheckedOut()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT copy_id FROM checkouts WHERE copy_id = @CopyId;", conn); //use try/catch and checked/unchecked? ExecuteScalar?
+
+      SqlParameter copyIdParameter = new SqlParameter("@CopyId", this.Id);
+      cmd.Parameters.Add(copyIdParameter);
+
+      object result = cmd.ExecuteScalar();
+      if (conn != null)
+      {
+        conn.Close();
+      }
+
+      if (result != null)
+      {
+        return true;
+      } 
+      else
+      {
+        return false;
+      }
     }
 
     public static void DeleteAll()

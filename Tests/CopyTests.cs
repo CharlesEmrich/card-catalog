@@ -52,7 +52,36 @@ namespace CardCatalog
       //Assert
       Assert.Equal(testList, result);
     }
+    [Fact]
+    public void Copy_Checkout_UpdatesDueDateInFront()
+    {
+      //Arrange
+      Book newBook = new Book("Confessions of a Mask");
+      newBook.Save();
+      Copy firstCopy = new Copy(newBook.Id, Copy.DefaultDate());
+      //Act
+      firstCopy.Checkout(1);
+      DateTime expected = DateTime.Today;
+      expected = expected.AddDays(7).AddHours(17);
+      //Assert
+      Assert.Equal(expected, firstCopy.DueDate);
+    }
+    [Fact]
+    public void Copy_Checkout_UpdatesDueDateInBack()
+    {
+      //Arrange
+      Book newBook = new Book("Confessions of a Mask");
+      newBook.Save();
+      Copy firstCopy = new Copy(newBook.Id, Copy.DefaultDate());
+      firstCopy.Save();
+      firstCopy.Checkout(1);
+      //Act
+      bool actual = firstCopy.IsCheckedOut();
+      bool expected = true;
 
+      //Assert
+      Assert.Equal(expected, actual);
+    }
 
   }
 }
