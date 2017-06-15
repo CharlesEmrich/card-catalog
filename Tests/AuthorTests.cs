@@ -28,7 +28,7 @@ namespace CardCatalog
       Assert.Equal(firstAuthor, secondAuthor);
     }
     [Fact]
-    public void Author_CitiesEmptyAtFirst()
+    public void Author_AuthorsEmptyAtFirst()
     {
       //Arrange, Act
       int result = Author.GetAll().Count;
@@ -70,6 +70,24 @@ namespace CardCatalog
       string result = testAuthor.Name;
       //Assert
       Assert.Equal(newName, result);
+    }
+    [Fact]
+    public void Author_AddBook_AddsBookAssociationToAuthorsBooks()
+    {
+      //Arrange
+      Book testBook1 = new Book("Phantom Tollbooth");
+      testBook1.Save();
+      Book testBook2 = new Book("The Purity Myth");
+      testBook2.Save();
+      Author testAuthor = new Author("Roxane Gay");
+      testAuthor.Save();
+      //Act
+      testAuthor.AddBook(testBook1);
+      testAuthor.AddBook(testBook2);
+      List<Book> actual = testAuthor.GetBooks();
+      List<Book> expected = new List<Book> {testBook1, testBook2};
+      //Assert
+      Assert.Equal(expected, actual);
     }
   }
 }
