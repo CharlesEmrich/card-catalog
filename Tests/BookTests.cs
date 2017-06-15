@@ -14,11 +14,6 @@ namespace CardCatalog
     {
       DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=card_catalog_test;Integrated Security=SSPI;";
     }
-    public void Dispose()
-    {
-      Book.DeleteAll();
-    }
-
     [Fact]
     public void Book_Equal_ReturnsTrueForIdenticalObjects()
     {
@@ -87,6 +82,11 @@ namespace CardCatalog
 
       //Assert
       Assert.Equal(expected, actual);
+    }
+    public void Dispose()
+    {
+      Book.DeleteAll();
+      Author.DeleteAll();
     }
   }
 }

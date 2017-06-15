@@ -107,14 +107,64 @@ namespace CardCatalog.Objects
     }
     public void AddAuthor(Author author)
     {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
 
+      SqlCommand cmd = new SqlCommand("INSERT INTO authors_books (author_id, book_id) VALUES (@AuthorId, @BookId);", conn);
+
+      SqlParameter authorIdParameter = new SqlParameter();
+      authorIdParameter.ParameterName = "@AuthorId";
+      authorIdParameter.Value = author.Id;
+      cmd.Parameters.Add(authorIdParameter);
+
+      SqlParameter bookIdParameter = new SqlParameter();
+      bookIdParameter.ParameterName = "@BookId";
+      bookIdParameter.Value = this.Id;
+      cmd.Parameters.Add(bookIdParameter);
+
+      cmd.ExecuteNonQuery();
+      if (conn != null)
+      {
+      conn.Close();
+      }
     }
+
     public List<Author> GetAuthors()
     {
-      List<Author> authors = new List<Author> {};
+      SqlConnection conn = DB.Connection();
+     conn.Open();
 
-      return authors;
+     SqlCommand cmd = new SqlCommand("SELECT authors.* FROM books JOIN authors_books ON (books.id = authors_books.book_id) JOIN authors ON (authors_books.author_id = authors.id)  WHERE books.id = @BookId;", conn);
+
+     SqlParameter bookIdParameter = new SqlParameter();
+     bookIdParameter.ParameterName = "@BookId";
+     bookIdParameter.Value = this.Id;
+
+     cmd.Parameters.Add(bookIdParameter);
+     SqlDataReader rdr = cmd.ExecuteReader();
+
+     List<Author> authors = new List<Author>{};
+
+     while(rdr.Read())
+     {
+       int authorId = rdr.GetInt32(0);
+       string authorName = rdr.GetString(1);
+
+       Author newAuthor = new Author(authorName, authorId);
+       authors.Add(newAuthor);
+     }
+
+     if (rdr != null)
+     {
+       rdr.Close();
+     }
+     if (conn != null)
+     {
+       conn.Close();
+     }
+     return authors;
     }
+
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();

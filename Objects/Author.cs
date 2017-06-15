@@ -80,6 +80,39 @@ namespace CardCatalog.Objects
       return allCities;
     }
 
+    public static Author Find(int id)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM authors WHERE id = @AuthorId;", conn);
+      SqlParameter authorIdParameter = new SqlParameter();
+      authorIdParameter.ParameterName = "@AuthorId";
+      authorIdParameter.Value = id.ToString();
+      cmd.Parameters.Add(authorIdParameter);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      int foundAuthorId = 0;
+      string foundAuthorName = null;
+      while(rdr.Read())
+      {
+        foundAuthorId = rdr.GetInt32(0);
+        foundAuthorName = rdr.GetString(1);
+      }
+      Author foundAuthor = new Author(foundAuthorName, foundAuthorId);
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return foundAuthor;
+    }
+
+
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();

@@ -52,5 +52,17 @@ namespace CardCatalog
       //Assert
       Assert.Equal(testList, result);
     }
+
+    [Fact]
+    public void Test_Find_FindsAuthorInDatabase()
+    {
+      //Arrange
+      Author testAuthor = new Author("Mark Twain");
+      testAuthor.Save();
+      //Act
+      Author foundAuthor = Author.Find(testAuthor.Id);
+      //Assert
+      Assert.Equal(testAuthor, foundAuthor);
+    }
   }
 }
