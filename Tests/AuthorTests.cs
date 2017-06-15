@@ -58,5 +58,18 @@ namespace CardCatalog
       //Assert
       Assert.Equal(testAuthor, foundAuthor);
     }
+    [Fact]
+    public void Author_Update_UpdatesAuthorNameInDatabase()
+    {
+      //Arrange
+      Author testAuthor = new Author("Roxane Gay");
+      testAuthor.Save();
+      string newName = "Lindy West";
+      //Act
+      testAuthor.Update(newName);
+      string result = testAuthor.Name;
+      //Assert
+      Assert.Equal(newName, result);
+    }
   }
 }
