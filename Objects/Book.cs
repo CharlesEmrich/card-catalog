@@ -54,9 +54,10 @@ namespace CardCatalog.Objects
         conn.Close();
       }
     }
+
     public static List<Book> GetAll()
     {
-      List<Book> allCities = new List<Book>{};
+      List<Book> allBooks = new List<Book>{};
       SqlConnection conn = DB.Connection();
       conn.Open();
 
@@ -67,7 +68,7 @@ namespace CardCatalog.Objects
         int bookId = rdr.GetInt32(0);
         string bookTitle = rdr.GetString(1);
         Book newBook = new Book(bookTitle, bookId);
-        allCities.Add(newBook);
+        allBooks.Add(newBook);
       }
       if (rdr != null)
       {
@@ -77,8 +78,41 @@ namespace CardCatalog.Objects
       {
         conn.Close();
       }
-      return allCities;
+      return allBooks;
     }
+
+    public static Book Find(int id)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM books WHERE id = @BookId;", conn);
+      SqlParameter bookIdParameter = new SqlParameter();
+      bookIdParameter.ParameterName = "@BookId";
+      bookIdParameter.Value = id.ToString();
+      cmd.Parameters.Add(bookIdParameter);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      int foundBookId = 0;
+      string foundBookName = null;
+      while(rdr.Read())
+      {
+        foundBookId = rdr.GetInt32(0);
+        foundBookName = rdr.GetString(1);
+      }
+      Book foundBook = new Book(foundBookName, foundBookId);
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return foundBook;
+    }
+
     public void Update(string newTitle)
     {
       SqlConnection conn = DB.Connection();
@@ -105,6 +139,7 @@ namespace CardCatalog.Objects
         conn.Close();
       }
     }
+
     public void AddAuthor(Author author)
     {
       SqlConnection conn = DB.Connection();

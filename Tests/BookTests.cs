@@ -20,7 +20,6 @@ namespace CardCatalog
       //Arrange, Act
       Book firstBook = new Book("Confessions of a Mask");
       Book secondBook = new Book("Confessions of a Mask");
-
       //Assert
       Assert.Equal(firstBook, secondBook);
     }
@@ -29,7 +28,6 @@ namespace CardCatalog
     {
       //Arrange, Act
       int result = Book.GetAll().Count;
-
       //Assert
       Assert.Equal(0, result);
     }
@@ -39,13 +37,22 @@ namespace CardCatalog
       //Arrange
       Book testBook = new Book("The Strange Tale of Panorama Island");
       testBook.Save();
-
       //Act
       List<Book> result = Book.GetAll();
       List<Book> testList = new List<Book>{testBook};
-
       //Assert
       Assert.Equal(testList, result);
+    }
+    [Fact]
+    public void Test_Find_FindsBookInDatabase()
+    {
+      //Arrange
+      Book testBook = new Book("Shrill");
+      testBook.Save();
+      //Act
+      Book foundBook = Book.Find(testBook.Id);
+      //Assert
+      Assert.Equal(testBook, foundBook);
     }
     [Fact]
     public void Book_Update_UpdatesBookTitleInDatabase()
@@ -54,12 +61,9 @@ namespace CardCatalog
       Book testBook = new Book("The Human Char");
       testBook.Save();
       string newTitle = "The Human Chair";
-
       //Act
       testBook.Update(newTitle);
-
       string result = testBook.Title;
-
       //Assert
       Assert.Equal(newTitle, result);
     }
@@ -73,13 +77,11 @@ namespace CardCatalog
       testAuthor2.Save();
       Book testBook = new Book("The Strange Tale of Panorama Island");
       testBook.Save();
-
       //Act
       testBook.AddAuthor(testAuthor1);
       testBook.AddAuthor(testAuthor2);
       List<Author> actual = testBook.GetAuthors();
       List<Author> expected = new List<Author> {testAuthor1, testAuthor2};
-
       //Assert
       Assert.Equal(expected, actual);
     }
