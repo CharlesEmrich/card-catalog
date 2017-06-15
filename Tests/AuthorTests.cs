@@ -89,5 +89,23 @@ namespace CardCatalog
       //Assert
       Assert.Equal(expected, actual);
     }
+    [Fact]
+    public void Test_Delete_ReturnsTrueIfListsAreTheSame()
+    {
+      //Arrange
+      Author firstTestAuthor = new Author("G.R.R. Martin");
+      firstTestAuthor.Save();
+      Author secondTestAuthor = new Author("C.S. Lewis");
+      secondTestAuthor.Save();
+      Author thirdTestAuthor = new Author("Margaret Atwood");
+      thirdTestAuthor.Save();
+      List<Author> expectedList = new List<Author>{firstTestAuthor, secondTestAuthor};
+      //Act
+      thirdTestAuthor.Delete();
+      List<Author> resultList = Author.GetAll();
+      //Assert
+      Assert.Equal(resultList, expectedList);
+    }
+
   }
 }

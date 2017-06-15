@@ -200,6 +200,25 @@ namespace CardCatalog.Objects
      return books;
     }
 
+    public void Delete()
+   {
+     SqlConnection conn = DB.Connection();
+     conn.Open();
+
+     SqlCommand cmd = new SqlCommand("DELETE FROM authors WHERE id = @AuthorId;", conn);
+
+     SqlParameter authorIdParameter = new SqlParameter();
+     authorIdParameter.ParameterName = "@AuthorId";
+     authorIdParameter.Value = this.Id;
+
+     cmd.Parameters.Add(authorIdParameter);
+     cmd.ExecuteNonQuery();
+
+     if (conn != null)
+     {
+       conn.Close();
+     }
+   }
 
     public static void DeleteAll()
     {
